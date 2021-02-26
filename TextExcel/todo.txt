@@ -1,0 +1,7 @@
+1)error handling
+	a)setting out-of-bounds cell
+	
+2)realCell superclass
+	a)ValueCell
+	b)PercentCell
+	c)FormulaCell
