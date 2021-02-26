@@ -8,10 +8,7 @@ public class TextCell implements Cell {
 	
 	@Override
 	public String abbreviatedCellText() {
-		String returnString=value;
-		returnString+="          ";//This feels hacky, but it avoids if statements and loops
-		
-		return returnString.substring(0,10);
+		return Helper.abbreviateString(value,10);
 	}
 
 	@Override
