@@ -67,11 +67,13 @@ public class Spreadsheet implements Grid {
 		}
 
 		if (isPercentCellAssignment(command)) {
-			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
-			String stringValue = Helper.assignmentTextValue(command);
-			stringValue = stringValue.replaceAll("\"", "");// remove percent sign
+			String sanitizedCommand=command.replaceAll("%","");
+			
+			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(sanitizedCommand));
+			String stringValue = Helper.assignmentTextValue(sanitizedCommand);
 			double doubleValue = Double.valueOf(stringValue);
 			sheet[loc.getRow()][loc.getCol()] = new PercentCell(doubleValue);
+			System.out.println("this runs");
 			return getGridText();
 		}
 		if (isFormulaCellAssignment(command)) { // TODO implement
@@ -137,7 +139,7 @@ public class Spreadsheet implements Grid {
 			try {
 				Double.valueOf(Helper.assignmentTextValue(command));
 				return true;
-			} catch (Exception e) {
+			} catch (Exception e) { //if we can't get the value of the string, it must not be a number
 				return false;
 			}
 		}
@@ -145,6 +147,14 @@ public class Spreadsheet implements Grid {
 	}
 
 	private boolean isPercentCellAssignment(String command) {// TODO
+		if (command.contains("=")&command.contains("%")) {
+			try {
+				Double.valueOf(Helper.assignmentTextValue(command.replaceAll("%",""))); //pass all but the percent sign to the helper method
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 		return false;
 	}
 
