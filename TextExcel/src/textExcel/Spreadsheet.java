@@ -25,12 +25,14 @@ public class Spreadsheet implements Grid {
 		if (command.equals("")) {// blank command returns nothing
 			return "";
 		}
-		if (command.toLowerCase().equals("clear")) {// clear command calls the clear function to clear entire spreadsheet
+		if (command.toLowerCase().equals("clear")) {// clear command calls the clear function to clear entire
+													// spreadsheet
 			clear();
 			return getGridText();
 		}
 		if (isCellReference(command)) {// if it's a single cell reference
-			if (Character.toUpperCase(command.charAt(0)) - 65 < getCols()) {// if the first character is less than the number of columns
+			if (Character.toUpperCase(command.charAt(0)) - 65 < getCols()) {// if the first character is less than the
+																			// number of columns
 				if (Integer.valueOf(command.substring(1)) <= getRows()) {// if the integer portion is less than the
 																			// number of rows
 					Location loc = new SpreadsheetLocation(command);
@@ -45,59 +47,62 @@ public class Spreadsheet implements Grid {
 
 		}
 		if (isStringCellAssignment(command)) {// If a string cell assignment, ie: a1 = "Hello World"
-			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));// everything before the equals sign															
-			String stringValue = Helper.assignmentTextValue(command); //everything after the equals sign
+			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));// everything before the
+																							// equals sign
+			String stringValue = Helper.assignmentTextValue(command); // everything after the equals sign
 			stringValue = stringValue.replaceAll("\"", "");// remove quotation marks.
-			sheet[loc.getRow()][loc.getCol()] = new TextCell(stringValue);//Assign the location to be a new text cell
+			sheet[loc.getRow()][loc.getCol()] = new TextCell(stringValue);// Assign the location to be a new text cell
+			System.out.println("new string cell"); //TODO remove
 			return getGridText();// after mutating sheet, return the updated sheet
 		}
-		
-		
-		if (isValueCellAssignment(command)) {//if its a value cell assignment, ie: a1 = 19.3
+
+		if (isValueCellAssignment(command)) {// if its a value cell assignment, ie: a1 = 19.3
 			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
 			String stringValue = Helper.assignmentTextValue(command);
 			double doubleValue = Double.valueOf(stringValue);
 			sheet[loc.getRow()][loc.getCol()] = new ValueCell(doubleValue);
+			System.out.println("new value cell"); //TODO remove
 			return getGridText();
-			
+
 		}
-		
+
 		if (isPercentCellAssignment(command)) {
 			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
 			String stringValue = Helper.assignmentTextValue(command);
-			stringValue=stringValue.replaceAll("\"", "");//remove percent sign
+			stringValue = stringValue.replaceAll("\"", "");// remove percent sign
 			double doubleValue = Double.valueOf(stringValue);
 			sheet[loc.getRow()][loc.getCol()] = new PercentCell(doubleValue);
 			return getGridText();
 		}
-		if (isFormulaCellAssignment(command)) {
-			
+		if (isFormulaCellAssignment(command)) { // TODO implement
+
 		}
-		
 
 		if (command.equals("clear")) {// clear entire spreadsheet
 			clear();
 		}
-		if (isClearCell(command)) {
-			Location target = new SpreadsheetLocation(command.substring(command.indexOf(" ")+1));
-			sheet[target.getRow()][target.getCol()]=new EmptyCell();
+		if (isClearCell(command)) { // if clearing a specific cell
+			Location target = new SpreadsheetLocation(command.substring(command.indexOf(" ") + 1));
+			sheet[target.getRow()][target.getCol()] = new EmptyCell();
 			return getGridText();
 		}
-		
+
 		return "Sorry, command not recognised";
 	}
 
 	private boolean isClearCell(String command) {
-		if(command.length()>6&command.toLowerCase().startsWith("clear ")) {
-			String cellReference = command.substring(command.indexOf(" ")+1);//everything after the first space
-			if(isCellReference(cellReference)) {
+		if (command.length() > 6 & command.toLowerCase().startsWith("clear ")) {
+			String cellReference = command.substring(command.indexOf(" ") + 1);// everything after the first space
+			if (isCellReference(cellReference)) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	private boolean isCellReference(String command) {
-		if ((!isStringCellAssignment(command)) & command.length() > 1 & command.charAt(0) >= 65 & command.charAt(0) <= 123) {
+		if ((!isStringCellAssignment(command)) & command.length() > 1 & command.charAt(0) >= 65
+				& command.charAt(0) <= 123) {
 			// if not a cell assignment, is at least 2 chars long, and the first char is
 			// between A and z
 			for (int i = 1; i < command.length(); i++) {// looping from the second character to the end
@@ -110,6 +115,7 @@ public class Spreadsheet implements Grid {
 		}
 		return false; // if something above is false, it's not a valid cell reference
 	}
+
 	private boolean isStringCellAssignment(String command) {
 		if (command.contains("\"")) {// if includes quotation marks
 			if (command.substring(0, command.indexOf("\"")).contains("=")) {// don't look for equals sign inside ""
@@ -117,21 +123,35 @@ public class Spreadsheet implements Grid {
 			} else {
 				return false;
 			}
-		} else if (command.contains("=")) {// if command contains an equals sign, it's a cell assisgnment
+		} 
+		/*else if (command.contains("=")) {// if command contains an equals sign, it's a cell assignment
 			return true;
-		} else {
+		} */
+		else {
 			return false;
 		}
 	}
-	private boolean isValueCellAssignment(String command) {//TODO
+
+	private boolean isValueCellAssignment(String command) {// TODO test
+		if (command.contains("=")) {
+			try {
+				Double.valueOf(Helper.assignmentTextValue(command));
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 		return false;
 	}
-	private boolean isPercentCellAssignment(String command) {//TODO
+
+	private boolean isPercentCellAssignment(String command) {// TODO
 		return false;
 	}
-	private boolean isFormulaCellAssignment(String command) {//TODO
+
+	private boolean isFormulaCellAssignment(String command) {// TODO
 		return false;
 	}
+
 	@Override
 	public int getRows() {
 		return sheet.length;

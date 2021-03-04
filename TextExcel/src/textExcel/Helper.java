@@ -1,6 +1,8 @@
 package textExcel;
 
 public class Helper {
+	//Contains several useful methods
+	
 	/**
 	 * 
 	 * @param input

@@ -13,7 +13,7 @@ public class ValueCell extends RealCell {
 
 	@Override
 	public String fullCellText() {
-		// TODO Auto-generated method stub
+		// TODO test
 		return Double.toString(doubleValue);
 	}
 	
