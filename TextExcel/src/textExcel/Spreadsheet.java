@@ -52,7 +52,7 @@ public class Spreadsheet implements Grid {
 			String stringValue = Helper.assignmentTextValue(command); // everything after the equals sign
 			stringValue = stringValue.replaceAll("\"", "");// remove quotation marks.
 			sheet[loc.getRow()][loc.getCol()] = new TextCell(stringValue);// Assign the location to be a new text cell
-			System.out.println("new string cell"); //TODO remove
+			
 			return getGridText();// after mutating sheet, return the updated sheet
 		}
 
@@ -61,7 +61,7 @@ public class Spreadsheet implements Grid {
 			String stringValue = Helper.assignmentTextValue(command);
 			double doubleValue = Double.valueOf(stringValue);
 			sheet[loc.getRow()][loc.getCol()] = new ValueCell(doubleValue);
-			System.out.println("new value cell"); //TODO remove
+			
 			return getGridText();
 
 		}
@@ -73,7 +73,7 @@ public class Spreadsheet implements Grid {
 			String stringValue = Helper.assignmentTextValue(sanitizedCommand);
 			double doubleValue = Double.valueOf(stringValue);
 			sheet[loc.getRow()][loc.getCol()] = new PercentCell(doubleValue);
-			System.out.println("this runs");
+			
 			return getGridText();
 		}
 		if (isFormulaCellAssignment(command)) { // TODO implement
