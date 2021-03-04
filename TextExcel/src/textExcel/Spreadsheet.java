@@ -45,20 +45,35 @@ public class Spreadsheet implements Grid {
 
 		}
 		if (isStringCellAssignment(command)) {// If a string cell assignment, ie: a1 = "Hello World"
-			Location loc = new SpreadsheetLocation(command.substring(0, command.indexOf("=") - 1));// everything before
-																									// the equals sign
-			String stringValue = command.substring(command.indexOf("=") + 2);// everything after the =. Plus 2 because
-																				// its inclusive and needs to skip a
-																				// space
-			if (stringValue.contains("\"")) {// if the cell should be set to a string
-				stringValue = stringValue.replaceAll("\"", "");// remove quotation marks. might need an extra escape to
-																// make regex work
-				sheet[loc.getRow()][loc.getCol()] = new TextCell(stringValue);
-			} else {
-				// TODO implement other cell assignments
-			}
+			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));// everything before the equals sign															
+			String stringValue = Helper.assignmentTextValue(command); //everything after the equals sign
+			stringValue = stringValue.replaceAll("\"", "");// remove quotation marks.
+			sheet[loc.getRow()][loc.getCol()] = new TextCell(stringValue);//Assign the location to be a new text cell
 			return getGridText();// after mutating sheet, return the updated sheet
 		}
+		
+		
+		if (isValueCellAssignment(command)) {//if its a value cell assignment, ie: a1 = 19.3
+			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
+			String stringValue = Helper.assignmentTextValue(command);
+			double doubleValue = Double.valueOf(stringValue);
+			sheet[loc.getRow()][loc.getCol()] = new ValueCell(doubleValue);
+			return getGridText();
+			
+		}
+		
+		if (isPercentCellAssignment(command)) {
+			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
+			String stringValue = Helper.assignmentTextValue(command);
+			stringValue=stringValue.replaceAll("\"", "");//remove percent sign
+			double doubleValue = Double.valueOf(stringValue);
+			sheet[loc.getRow()][loc.getCol()] = new PercentCell(doubleValue);
+			return getGridText();
+		}
+		if (isFormulaCellAssignment(command)) {
+			
+		}
+		
 
 		if (command.equals("clear")) {// clear entire spreadsheet
 			clear();
@@ -68,6 +83,7 @@ public class Spreadsheet implements Grid {
 			sheet[target.getRow()][target.getCol()]=new EmptyCell();
 			return getGridText();
 		}
+		
 		return "Sorry, command not recognised";
 	}
 
@@ -94,7 +110,6 @@ public class Spreadsheet implements Grid {
 		}
 		return false; // if something above is false, it's not a valid cell reference
 	}
-
 	private boolean isStringCellAssignment(String command) {
 		if (command.contains("\"")) {// if includes quotation marks
 			if (command.substring(0, command.indexOf("\"")).contains("=")) {// don't look for equals sign inside ""
@@ -108,7 +123,15 @@ public class Spreadsheet implements Grid {
 			return false;
 		}
 	}
-
+	private boolean isValueCellAssignment(String command) {//TODO
+		return false;
+	}
+	private boolean isPercentCellAssignment(String command) {//TODO
+		return false;
+	}
+	private boolean isFormulaCellAssignment(String command) {//TODO
+		return false;
+	}
 	@Override
 	public int getRows() {
 		return sheet.length;

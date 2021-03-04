@@ -18,13 +18,15 @@ public class SpreadsheetLocation implements Location
     	//check if columnChar is capital or lower case
     	//A is 65, a is 97 
     	//set col to int value of columnChar
+    	/*
     	if(columnChar>=97) {
     		col = columnChar-97;
     	}else {//must be upper case
     		col = columnChar-65;
-    	}
-    	row=rowInt-1;
+    	}*/
     	
+    	row=rowInt-1;
+    	col = Character.toLowerCase(columnChar)-97;//TODO test and delete commented code
     }
 	
     @Override
