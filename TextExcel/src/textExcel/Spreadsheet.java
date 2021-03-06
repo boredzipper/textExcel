@@ -52,34 +52,32 @@ public class Spreadsheet implements Grid {
 			String stringValue = Helper.assignmentTextValue(command); // everything after the equals sign
 			stringValue = stringValue.replaceAll("\"", "");// remove quotation marks.
 			sheet[loc.getRow()][loc.getCol()] = new TextCell(stringValue);// Assign the location to be a new text cell
-			
+
 			return getGridText();// after mutating sheet, return the updated sheet
 		}
 
 		if (isValueCellAssignment(command)) {// if its a value cell assignment, ie: a1 = 19.3
 			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
 			String stringValue = Helper.assignmentTextValue(command);
-			Number value;
-			if (stringValue.contains(".")){
-				value = Double.valueOf(stringValue);
-				
-			}else {
-				value = Integer.valueOf(stringValue);
+			double value = Double.valueOf(stringValue);
+			if (stringValue.contains(".")) {
+				sheet[loc.getRow()][loc.getCol()] = new ValueCell(value);
+			} else {
+				sheet[loc.getRow()][loc.getCol()] = new ValueCell(value, true);// is an integer
 			}
-			sheet[loc.getRow()][loc.getCol()] = new ValueCell(value);
-			
+
 			return getGridText();
 
 		}
 
 		if (isPercentCellAssignment(command)) {
-			String sanitizedCommand=command.replaceAll("%","");
-			
+			String sanitizedCommand = command.replaceAll("%", "");
+
 			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(sanitizedCommand));
 			String stringValue = Helper.assignmentTextValue(sanitizedCommand);
 			double doubleValue = Double.valueOf(stringValue);
 			sheet[loc.getRow()][loc.getCol()] = new PercentCell(doubleValue);
-			
+
 			return getGridText();
 		}
 		if (isFormulaCellAssignment(command)) { // TODO implement
@@ -131,10 +129,11 @@ public class Spreadsheet implements Grid {
 			} else {
 				return false;
 			}
-		} 
-		/*else if (command.contains("=")) {// if command contains an equals sign, it's a cell assignment
-			return true;
-		} */
+		}
+		/*
+		 * else if (command.contains("=")) {// if command contains an equals sign, it's
+		 * a cell assignment return true; }
+		 */
 		else {
 			return false;
 		}
@@ -145,7 +144,7 @@ public class Spreadsheet implements Grid {
 			try {
 				Double.valueOf(Helper.assignmentTextValue(command));
 				return true;
-			} catch (Exception e) { //if we can't get the value of the string, it must not be a number
+			} catch (Exception e) { // if we can't get the value of the string, it must not be a number
 				return false;
 			}
 		}
@@ -153,9 +152,10 @@ public class Spreadsheet implements Grid {
 	}
 
 	private boolean isPercentCellAssignment(String command) {// TODO
-		if (command.contains("=")&command.contains("%")) {
+		if (command.contains("=") & command.contains("%")) {
 			try {
-				Double.valueOf(Helper.assignmentTextValue(command.replaceAll("%",""))); //pass all but the percent sign to the helper method
+				Double.valueOf(Helper.assignmentTextValue(command.replaceAll("%", ""))); // pass all but the percent
+																							// sign to the helper method
 				return true;
 			} catch (Exception e) {
 				return false;

@@ -10,6 +10,9 @@ public class TextExcel
 	public static void main(String[] args)
 	{
 		//tests
+		double testDouble = 123456;
+		//System.out.println((int)Math.floor(testDouble));
+		
 		/*
 		String test = "a1 world";
 		Location loc=new SpreadsheetLocation(test.substring(0,test.indexOf(" ")));
