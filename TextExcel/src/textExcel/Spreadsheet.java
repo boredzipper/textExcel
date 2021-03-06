@@ -59,8 +59,14 @@ public class Spreadsheet implements Grid {
 		if (isValueCellAssignment(command)) {// if its a value cell assignment, ie: a1 = 19.3
 			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
 			String stringValue = Helper.assignmentTextValue(command);
-			double doubleValue = Double.valueOf(stringValue);
-			sheet[loc.getRow()][loc.getCol()] = new ValueCell(doubleValue);
+			Number value;
+			if (stringValue.contains(".")){
+				value = Double.valueOf(stringValue);
+				
+			}else {
+				value = Integer.valueOf(stringValue);
+			}
+			sheet[loc.getRow()][loc.getCol()] = new ValueCell(value);
 			
 			return getGridText();
 

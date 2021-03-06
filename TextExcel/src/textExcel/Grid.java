@@ -13,3 +13,4 @@ public interface Grid
 	Cell getCell(Location loc); // returns cell at loc
 	String getGridText(); // returns entire grid, formatted as text for display
 }
+
