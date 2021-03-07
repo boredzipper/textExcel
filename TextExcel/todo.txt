@@ -5,3 +5,14 @@
 	a)ValueCell
 	b)PercentCell
 	c)FormulaCell
+	
+3)Save as csv
+	implement save command (takes a filename as an argument)
+	Loop through spreadsheet, adding each cell in the format CellIdentifier,CellType,FullCellText.
+	Empty cells are not entered
+	value is identical to fullCellText() method
+	create a helper method that returns the formatted line
+
+4)Command history?
+5)processing formula cells
+	Optionally, order of operations?
