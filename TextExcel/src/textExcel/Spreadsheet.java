@@ -144,10 +144,17 @@ public class Spreadsheet implements Grid {
 	private boolean isSaveCommand(String command) {
 
 		// TODO implement
-		if (command.contains("save")) {
-			return true;
-		}
+		if (command.substring(0,4).equals("save ")) {
+			if(!command.substring(5).replaceAll(" ", "").equals("")) {
+				return true;
+			}else {
+				return false;
+			}
+			
+			
+		}else {
 		return false;
+		}
 	}
 
 	private boolean isClearCell(String command) {
