@@ -1,5 +1,10 @@
 package textExcel;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 // Update this file with your own code.
 
 public class Spreadsheet implements Grid {
@@ -102,7 +107,7 @@ public class Spreadsheet implements Grid {
 					Cell currentCell = sheet[row][col];
 					if (currentCell.getClass() != EmptyCell.class) {// if not empty
 						// append identifier (ie C20)
-						csvString += ((char) (col + 65)) + (row + 1) + ",";
+						csvString += ((char) (col + 65)) + String.valueOf((row + 1)) + ",";
 						// append type (ie ValueCell)
 						csvString += currentCell.getClass().getSimpleName() + ",";
 						// append fullCellText
@@ -111,7 +116,27 @@ public class Spreadsheet implements Grid {
 				}
 			}
 			// write to file
-			System.out.println(csvString);
+			//TODO test
+			File outPutFile = new File(fileLocation);// TODO where does this save
+			if (!outPutFile.exists()) {
+				try {
+					outPutFile.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return "Failed to create file: " + fileLocation;
+				}
+			}
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(outPutFile));
+				out.write(csvString);
+				out.close();
+				return "Succesfully saved spreadsheet to: " + fileLocation;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "Failed to save to: " + fileLocation;
+			}
 		}
 		return "Sorry, command not recognised";
 	}
@@ -119,7 +144,7 @@ public class Spreadsheet implements Grid {
 	private boolean isSaveCommand(String command) {
 
 		// TODO implement
-		if (command.equals("save")) {
+		if (command.contains("save")) {
 			return true;
 		}
 		return false;
