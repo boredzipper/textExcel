@@ -1,18 +1,17 @@
 package textExcel;
 
-import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.*;
 
 
 public class TextExcel
 {
 	public final static int COLWIDTH = 10;
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		//tests
-		double testDouble = 123456;
-		//System.out.println((int)Math.floor(testDouble));
-		
+		TextCell test = new TextCell("A1");
+		System.out.println(test.getClass().getSimpleName());
 		/*
 		String test = "a1 world";
 		Location loc=new SpreadsheetLocation(test.substring(0,test.indexOf(" ")));
