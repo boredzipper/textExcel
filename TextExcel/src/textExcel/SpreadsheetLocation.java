@@ -6,6 +6,8 @@ public class SpreadsheetLocation implements Location
 {
 	int row;
 	int col;
+	char columnChar;
+	int rowDisplayedInt;
 	
 	/*
 	 * @Precondition cellName consists of a letter character followed by a number greater than 0
@@ -15,18 +17,12 @@ public class SpreadsheetLocation implements Location
     	char columnChar = cellName.charAt(0);
     	int rowInt = Integer.parseInt(cellName.substring(1)); //TODO error handling
     	
-    	//check if columnChar is capital or lower case
-    	//A is 65, a is 97 
-    	//set col to int value of columnChar
-    	/*
-    	if(columnChar>=97) {
-    		col = columnChar-97;
-    	}else {//must be upper case
-    		col = columnChar-65;
-    	}*/
     	
     	row=rowInt-1;
-    	col = Character.toLowerCase(columnChar)-97;//TODO test and delete commented code
+    	col = Character.toLowerCase(columnChar)-97;
+    	this.columnChar = columnChar;
+    	this.rowDisplayedInt = rowInt;
+    	
     }
 	
     @Override
@@ -40,5 +36,12 @@ public class SpreadsheetLocation implements Location
     {
         return col;
     }
+    
+	public char getColumnChar() {
+		return columnChar;
+	}
+	public int getRowDisplayedInt() {
+		return rowDisplayedInt;
+	}
 
 }

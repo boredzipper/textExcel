@@ -92,8 +92,37 @@ public class Spreadsheet implements Grid {
 			sheet[target.getRow()][target.getCol()] = new EmptyCell();
 			return getGridText();
 		}
-
+		if (isSaveCommand(command)) {
+			// TODO implement
+			String fileLocation = command.substring(command.indexOf(" "));
+			String csvString = ""; // save the entire spreadsheet as a String, and write it to a file a single
+									// time.
+			for (int row = 0; row < NUMROWS; row++) {
+				for (int col = 0; col < NUMCOLS; col++) {
+					Cell currentCell = sheet[row][col];
+					if (currentCell.getClass() != EmptyCell.class) {// if not empty
+						// append identifier (ie C20)
+						csvString += ((char) (col + 65)) + (row + 1) + ",";
+						// append type (ie ValueCell)
+						csvString += currentCell.getClass().getSimpleName() + ",";
+						// append fullCellText
+						csvString += currentCell.fullCellText() + "\n";
+					}
+				}
+			}
+			// write to file
+			System.out.println(csvString);
+		}
 		return "Sorry, command not recognised";
+	}
+
+	private boolean isSaveCommand(String command) {
+
+		// TODO implement
+		if (command.equals("save")) {
+			return true;
+		}
+		return false;
 	}
 
 	private boolean isClearCell(String command) {
