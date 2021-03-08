@@ -99,7 +99,7 @@ public class Spreadsheet implements Grid {
 		}
 		if (isSaveCommand(command)) {
 			// TODO implement
-			String fileLocation = command.substring(command.indexOf(" "));
+			String fileLocation = command.substring(command.indexOf(" ")+1);
 			String csvString = ""; // save the entire spreadsheet as a String, and write it to a file a single
 									// time.
 			for (int row = 0; row < NUMROWS; row++) {
@@ -117,7 +117,7 @@ public class Spreadsheet implements Grid {
 			}
 			// write to file
 			//TODO test
-			File outPutFile = new File(fileLocation);// TODO where does this save
+			File outPutFile = new File(fileLocation);// TODO how to save to arbitrary file
 			if (!outPutFile.exists()) {
 				try {
 					outPutFile.createNewFile();
