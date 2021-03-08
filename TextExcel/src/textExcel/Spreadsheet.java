@@ -142,9 +142,7 @@ public class Spreadsheet implements Grid {
 	}
 
 	private boolean isSaveCommand(String command) {
-
-		// TODO implement
-		if (command.substring(0,4).equals("save ")) {
+		if (command.substring(0,5).equals("save ")) {
 			if(!command.substring(5).replaceAll(" ", "").equals("")) {
 				return true;
 			}else {
