@@ -10,8 +10,7 @@ public class TextExcel
 	public static void main(String[] args) throws IOException
 	{
 		//tests
-		TextCell test = new TextCell("A1");
-		System.out.println(test.getClass().getSimpleName());
+		
 		/*
 		String test = "a1 world";
 		Location loc=new SpreadsheetLocation(test.substring(0,test.indexOf(" ")));

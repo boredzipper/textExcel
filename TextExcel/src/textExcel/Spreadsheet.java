@@ -2,8 +2,10 @@ package textExcel;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 // Update this file with your own code.
 
@@ -99,7 +101,7 @@ public class Spreadsheet implements Grid {
 		}
 		if (isSaveCommand(command)) {
 			// TODO implement
-			String fileLocation = command.substring(command.indexOf(" ")+1);
+			String fileLocation = command.substring(command.indexOf(" ") + 1);
 			String csvString = ""; // save the entire spreadsheet as a String, and write it to a file a single
 									// time.
 			for (int row = 0; row < NUMROWS; row++) {
@@ -116,7 +118,7 @@ public class Spreadsheet implements Grid {
 				}
 			}
 			// write to file
-			//TODO test
+			// TODO test
 			File outPutFile = new File(fileLocation);// TODO how to save to arbitrary file
 			if (!outPutFile.exists()) {
 				try {
@@ -138,19 +140,120 @@ public class Spreadsheet implements Grid {
 				return "Failed to save to: " + fileLocation;
 			}
 		}
+		if (isOpenCommand(command)) {
+			// determine file name
+			String fileLocation = command.substring(command.indexOf(" ") + 1);
+			File inFile = new File(fileLocation);
+			// check if file exists
+			if (!inFile.exists()) {
+				return "Error, could not find file: " + fileLocation;
+			} else {
+				System.out.println("Opening file: " + fileLocation);
+			}
+			// check if valid file
+			if (isValidCSVFile(inFile)) {
+				// if it is, clear current sheet.
+				clear();
+				try {
+					// for each line in the input file, set the corresponding location to a new cell
+					Scanner in = new Scanner(inFile);
+					while (in.hasNextLine()) { // for each line in file
+						String[] splitString = in.nextLine().split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+						// [0], [1], [2]
+						// cellreference, celltype, cell value
+						Location loc = new SpreadsheetLocation(splitString[0]);
+						if (splitString[1].equals(ValueCell.class.getSimpleName())) {
+							sheet[loc.getRow()][loc.getCol()] = new ValueCell(Double.valueOf(splitString[2]),!splitString[2].contains("."));
+
+						}
+						if (splitString[1].equals(PercentCell.class.getSimpleName())) {
+							sheet[loc.getRow()][loc.getCol()] = new PercentCell(Double.valueOf(splitString[2])*100.0);
+						}
+						if (splitString[1].equals(TextCell.class.getSimpleName())) {
+							sheet[loc.getRow()][loc.getCol()] = new TextCell(splitString[2].substring(1,splitString[2].length()-1));//remove stored double quotes
+						}
+						if (splitString[1].equals(FormulaCell.class.getSimpleName())) {
+							sheet[loc.getRow()][loc.getCol()] = new FormulaCell(splitString[2]);
+						}
+
+					}
+					in.close();
+				} catch (Exception e) {
+					// this should never run
+					return "Error, something bad happened";
+				}
+			} else {
+				return "Error, " + fileLocation + " is not a valid TextExcel file.";
+			}
+			return getGridText();
+
+		}
 		return "Sorry, command not recognised";
 	}
 
-	private boolean isSaveCommand(String command) {
-		if (command.substring(0,5).equals("save ")) {
-			if(!command.substring(5).replaceAll(" ", "").equals("")) {
+	private boolean isValidCSVFile(File file) {
+		try {
+			Scanner in = new Scanner(file);
+			while (in.hasNextLine()) { // for each line in file, if it is not a valid csv string, return false
+				// testing
+				String currentLine = in.nextLine();
+				System.out.println("testing line: " + currentLine);// test
+				if (!isValidCSVString(currentLine)) {
+					System.out.println("Failed"); // test
+					in.close();
+					return false;
+				}
+			}
+			in.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isValidCSVString(String csvString) {
+		String[] splitString = csvString.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");// TODO should match all commas not in
+																					// quotes
+		if (splitString.length != 3) {
+			System.out.print("too short");//test
+			return false;
+		}
+		// check if first part of line is a cellReference
+		if (!isCellReference(splitString[0])) {
+			System.out.println("not cell reference");//test
+			return false;
+		}
+		// check if second part is valid cell type
+		if (!(splitString[1].equals("ValueCell") || splitString[1].equals("TextCell") || splitString[1].equals("PercentCell") || splitString[1].equals("FormulaCell"))) { // TODO did I forget any?
+			System.out.println("cell type not valid");//test
+			return false;
+		}
+		// check if final part matches the cell type
+		// for value cell or percent cell, must be a valid double
+		// for text cell, all values are valid
+		// for function cell, will have to create a method to check later.
+		if (splitString[1] == "ValueCell" || splitString[1] == "PercentCell") {
+			try {
+				Double.valueOf(splitString[2]); // try to convert final string to a double. If we can't the csv string
+												// is not valid
 				return true;
-			}else {
+			} catch (Exception e) {
+				System.out.println("bad value");//test
 				return false;
 			}
-			
-			
-		}else {
+		}
+		// TODO check if valid function cell
+		return true;
+	}
+
+	private boolean isOpenCommand(String command) {
+		// TODO implement
+		if (command.contains("open")&&command.length()>=5) {
+			if(command.substring(0, 5).equals("open ")) {
+				return true;
+			}
+		}
 		return false;
 		}
 	}
