@@ -249,8 +249,10 @@ public class Spreadsheet implements Grid {
 
 	private boolean isOpenCommand(String command) {
 		// TODO implement
-		if (command.contains("open")) {
-			return true;
+		if (command.contains("open")&&command.length()>=5) {
+			if(command.substring(0, 5).equals("open ")) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -258,8 +260,10 @@ public class Spreadsheet implements Grid {
 	private boolean isSaveCommand(String command) {
 
 		// TODO implement
-		if (command.contains("save")) {
-			return true;
+		if (command.contains("save") && command.length()>=5) {
+			if(command.substring(0, 5).equals("save ")) {
+				return true;
+			}
 		}
 		return false;
 	}
