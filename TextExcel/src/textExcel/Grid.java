@@ -1,7 +1,10 @@
 package textExcel;
 
+import java.io.FileNotFoundException;
+
 //*******************************************************
 //DO NOT MODIFY THIS FILE!!!
+//
 //*******************************************************
 
 public interface Grid 
