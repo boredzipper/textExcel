@@ -255,7 +255,17 @@ public class Spreadsheet implements Grid {
 			}
 		}
 		return false;
+	}
+
+	private boolean isSaveCommand(String command) {
+
+		// TODO implement
+		if (command.contains("save") && command.length()>=5) {
+			if(command.substring(0, 5).equals("save ")) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	private boolean isClearCell(String command) {
