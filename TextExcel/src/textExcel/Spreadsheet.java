@@ -10,9 +10,9 @@ import java.util.Scanner;
 // Update this file with your own code.
 
 public class Spreadsheet implements Grid {
-	public final int NUMROWS = 20;
-	public final int NUMCOLS = 12;
-	Cell[][] sheet = new Cell[NUMROWS][NUMCOLS];
+	public static final int NUMROWS = 20;
+	public static final int NUMCOLS = 12;
+	static Cell[][] sheet = new Cell[NUMROWS][NUMCOLS];
 
 	Spreadsheet() {
 		clear(); // initialize all cells to be new EmptyCells
@@ -355,6 +355,7 @@ public class Spreadsheet implements Grid {
 		// TODO error handling
 		return sheet[loc.getRow()][loc.getCol()];
 	}
+	
 
 	@Override
 	public String getGridText() {
@@ -381,5 +382,11 @@ public class Spreadsheet implements Grid {
 
 		return gridText;
 	}
+
+	public static Cell[][] getSheet() {
+		return sheet;
+	}
+
+	
 
 }
