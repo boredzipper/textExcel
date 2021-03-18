@@ -88,7 +88,7 @@ public class Spreadsheet implements Grid {
 
 			return getGridText();
 		}
-		if (isFormulaCellAssignment(command)) { // TODO implement
+		if (isFormulaCellAssignment(command)) {
 			Location loc = new SpreadsheetLocation(Helper.assignmentCellReference(command));
 			String formulaValue = Helper.assignmentTextValue(command);
 			sheet[loc.getRow()][loc.getCol()] = new FormulaCell(formulaValue);
@@ -104,7 +104,6 @@ public class Spreadsheet implements Grid {
 			return getGridText();
 		}
 		if (isSaveCommand(command)) {
-			// TODO implement
 			String fileLocation = command.substring(command.indexOf(" ") + 1);
 			String csvString = ""; // save the entire spreadsheet as a String, and write it to a file a single
 									// time.
@@ -122,13 +121,11 @@ public class Spreadsheet implements Grid {
 				}
 			}
 			// write to file
-			// TODO test
-			File outPutFile = new File(fileLocation);// TODO how to save to arbitrary file
+			File outPutFile = new File(fileLocation);
 			if (!outPutFile.exists()) {
 				try {
 					outPutFile.createNewFile();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return "Failed to create file: " + fileLocation;
 				}
@@ -139,7 +136,6 @@ public class Spreadsheet implements Grid {
 				out.close();
 				return "Succesfully saved spreadsheet to: " + fileLocation;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return "Failed to save to: " + fileLocation;
 			}
@@ -220,8 +216,7 @@ public class Spreadsheet implements Grid {
 	}
 
 	private boolean isValidCSVString(String csvString) {
-		String[] splitString = csvString.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");// TODO should match all commas not in
-																					// quotes
+		String[] splitString = csvString.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 		if (splitString.length != 3) {
 			System.out.print("too short");// test
 			return false;
@@ -233,8 +228,7 @@ public class Spreadsheet implements Grid {
 		}
 		// check if second part is valid cell type
 		if (!(splitString[1].equals("ValueCell") || splitString[1].equals("TextCell")
-				|| splitString[1].equals("PercentCell") || splitString[1].equals("FormulaCell"))) { // TODO did I forget
-																									// any?
+				|| splitString[1].equals("PercentCell") || splitString[1].equals("FormulaCell"))) {
 			System.out.println("cell type not valid");// test
 			return false;
 		}
@@ -252,12 +246,10 @@ public class Spreadsheet implements Grid {
 				return false;
 			}
 		}
-		// TODO check if valid function cell
 		return true;
 	}
 
 	private boolean isOpenCommand(String command) {
-		// TODO implement
 		if (command.contains("open") && command.length() >= 5) {
 			if (command.substring(0, 5).equals("open ")) {
 				return true;
@@ -267,8 +259,6 @@ public class Spreadsheet implements Grid {
 	}
 
 	private boolean isSaveCommand(String command) {
-
-		// TODO implement
 		if (command.contains("save") && command.length() >= 5) {
 			if (command.substring(0, 5).equals("save ")) {
 				return true;
@@ -320,7 +310,7 @@ public class Spreadsheet implements Grid {
 		}
 	}
 
-	private boolean isValueCellAssignment(String command) {// TODO test
+	private boolean isValueCellAssignment(String command) {
 		if (command.contains("=")) {
 			try {
 				Double.valueOf(Helper.assignmentTextValue(command));
@@ -332,7 +322,7 @@ public class Spreadsheet implements Grid {
 		return false;
 	}
 
-	private boolean isPercentCellAssignment(String command) {// TODO
+	private boolean isPercentCellAssignment(String command) {
 		if (command.contains("=") & command.contains("%")) {
 			try {
 				Double.valueOf(Helper.assignmentTextValue(command.replaceAll("%", ""))); // pass all but the percent
@@ -345,7 +335,7 @@ public class Spreadsheet implements Grid {
 		return false;
 	}
 
-	private boolean isFormulaCellAssignment(String command) {// TODO implement
+	private boolean isFormulaCellAssignment(String command) {
 		// contains 1 "(" and 1 ")"
 		// everything inside is either a double, a cell reference, an operator, or a
 		// method(avg, sum)
@@ -374,7 +364,6 @@ public class Spreadsheet implements Grid {
 						RealCell valCell = (RealCell) sheet[loc.getRow()][loc.getCol()];// check if that cell is a
 																						// RealCell
 					} catch (Exception e2) {
-						// TODO check if a valid method (sum, avg)
 						return false;
 					}
 				}

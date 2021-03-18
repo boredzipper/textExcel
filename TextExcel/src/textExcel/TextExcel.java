@@ -22,7 +22,7 @@ public class TextExcel
 	    	String command = userInput.nextLine();
 	    	if(command.equals("quit")) {//Handle a quit command here, because spreadsheet.processCommand returns a string
 	    		System.out.println("Goodbye!");
-	    		break;//TODO is breaking bad?
+	    		break;
 	    	}
 	    	System.out.println(sheet.processCommand(command));//print the output of processCommand()
 	    	

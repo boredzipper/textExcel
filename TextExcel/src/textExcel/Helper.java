@@ -8,7 +8,7 @@ public class Helper {
 	 * @param length
 	 * @return the input string shortened or lengthened to length characters
 	 */
-	public static String abbreviateString(String input, int length) { // TODO wtf does static mean
+	public static String abbreviateString(String input, int length) {
 		String returnString = input;
 		if (input.length() >= length) {
 			return input.substring(0, length);
@@ -26,7 +26,7 @@ public class Helper {
 	 * @return The input string shortened or lengthened to the constant
 	 *         TextExcel.COLWIDTH, which should be 10
 	 */
-	public static String abbreviateString(String input) { // TODO wtf does static mean
+	public static String abbreviateString(String input) {
 		return abbreviateString(input, TextExcel.COLWIDTH);
 	}
 
@@ -35,7 +35,7 @@ public class Helper {
 	 * @return the cell reference that the command begins with
 	 */
 	public static String assignmentCellReference(String command) {
-		return command.substring(0, command.indexOf("=") - 1);// TODO test
+		return command.substring(0, command.indexOf("=") - 1);
 	}
 
 	public static String assignmentTextValue(String command) {

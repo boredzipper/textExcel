@@ -15,13 +15,11 @@ public class ValueCell extends RealCell {
 
 	@Override
 	public String abbreviatedCellText() {
-		// TODO test
 		return Helper.abbreviateString(Double.toString(doubleValue));
 	}
 
 	@Override
 	public String fullCellText() {
-		// TODO test
 		if (isInt) {
 			return Double.toString(Math.floor(doubleValue)).replace(".0", "");//TODO This is going to break for large integers in scientific notation
 		} else {
