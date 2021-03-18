@@ -45,8 +45,7 @@ public class Helper {
 
 	public static boolean isCellReference(String string) {
 		if (string.length() > 1 & string.charAt(0) >= 65 & string.charAt(0) <= 123) {
-			// if not a cell assignment, is at least 2 chars long, and the first char is
-			// between A and z
+			// is at least 2 chars long, and the first char is between A and z
 			for (int i = 1; i < string.length(); i++) {// looping from the second character to the end
 				if (string.charAt(i) >= 48 & string.charAt(i) <= 57) {// is a digit
 				} else {
